@@ -1,54 +1,59 @@
-// MangaService.cs
+// JaveragesLibrary/Services/Features/Mangas/MangaService.cs
 
 using JaveragesLibrary.Domain.Entities;
 using JaveragesLibrary.Infrastructure.Repositories;
-using System.Collections.Generic; // Para IEnumerable
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace JaveragesLibrary.Services.Features.Mangas;
-
-public class MangaService
+namespace JaveragesLibrary.Services.Features.Mangas
 {
-    private readonly MangaRepository _mangaRepository;
-
-    public MangaService(MangaRepository mangaRepository)
+    public class MangaService
     {
-        _mangaRepository = mangaRepository; // Corregido: this._mangaRepository a _mangaRepository
-    }
+        private readonly MangaRepository _mangaRepository;
 
-    public IEnumerable<Manga> GetAll()
-    {
-        return _mangaRepository.GetAll();
-    }
+        public MangaService(MangaRepository mangaRepository)
+        {
+            _mangaRepository = mangaRepository;
+        }
 
-    public Manga GetById(int id)
-    {
-        // Si cambias MangaRepository.GetById para que devuelva Manga? (nullable)
-        // este método también debería idealmente devolver Manga?
-        return _mangaRepository.GetById(id);
-    }
+        // --- MÉTODO MODIFICADO ---
+        // Ahora acepta y pasa los parámetros de paginación
+        public async Task<IEnumerable<Manga>> GetAll(int pageNumber, int pageSize)
+        {
+            return await _mangaRepository.GetAllAsync(pageNumber, pageSize);
+        }
 
-    // 👇 CAMBIA void A Manga y retorna el manga
-    public Manga Add(Manga manga)
-    {
-        _mangaRepository.Add(manga);
-        // Asumimos que el objeto 'manga' pasado ya tiene un ID
-        // o que el ID no es crítico para el Location header si es 0.
-        // Si MangaRepository.Add asignara un ID, lo ideal sería que lo devolviera.
-        return manga;
-    }
+        // --- MÉTODOS SIN CAMBIOS (Se incluyen para que el archivo esté completo) ---
+        public async Task<Manga?> GetById(int id)
+        {
+            return await _mangaRepository.GetByIdAsync(id);
+        }
 
-    // 👇 CAMBIA void A bool y retorna el resultado del repositorio
-    public bool Update(Manga mangaToUpdate)
-    {
-        // Eliminamos la pre-verificación con GetById aquí, ya que MangaRepository.Update
-        // ahora devolverá true si el manga fue encontrado y actualizado, o false en caso contrario.
-        return _mangaRepository.Update(mangaToUpdate);
-    }
+        public async Task Add(Manga manga)
+        {
+            await _mangaRepository.AddAsync(manga);
+        }
 
-    // 👇 CAMBIA void A bool y retorna el resultado del repositorio
-    public bool Delete(int id)
-    {
-        // Eliminamos la pre-verificación con GetById aquí por la misma razón.
-        return _mangaRepository.Delete(id);
+        public async Task<bool> Update(Manga mangaToUpdate)
+        {
+            var existingManga = await _mangaRepository.GetByIdAsync(mangaToUpdate.Id);
+            if (existingManga == null)
+            {
+                return false;
+            }
+            await _mangaRepository.UpdateAsync(mangaToUpdate);
+            return true;
+        }
+
+        public async Task<bool> Delete(int id)
+        {
+            var existingManga = await _mangaRepository.GetByIdAsync(id);
+            if (existingManga == null)
+            {
+                return false;
+            }
+            await _mangaRepository.DeleteAsync(id);
+            return true;
+        }
     }
 }

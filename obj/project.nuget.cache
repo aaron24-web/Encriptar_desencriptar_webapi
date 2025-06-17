@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "KNTSPd8irfI=",
+  "dgSpecHash": "D6O/OpbD380=",
   "success": true,
-  "projectFilePath": "/Users/aarontun/Codes/C#/webapi/Home/Proyect_api/Proyect_api.csproj",
+  "projectFilePath": "/Users/aarontun/Codes/C#/WebApi_MangaDB_v1/Proyect_api/Proyect_api.csproj",
   "expectedPackageFiles": [
     "/Users/aarontun/.nuget/packages/automapper/12.0.1/automapper.12.0.1.nupkg.sha512",
     "/Users/aarontun/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/12.0.1/automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
@@ -56,9 +56,9 @@
     "/Users/aarontun/.nuget/packages/system.text.encodings.web/9.0.6/system.text.encodings.web.9.0.6.nupkg.sha512",
     "/Users/aarontun/.nuget/packages/system.text.json/9.0.6/system.text.json.9.0.6.nupkg.sha512",
     "/Users/aarontun/.nuget/packages/system.threading.channels/7.0.0/system.threading.channels.7.0.0.nupkg.sha512",
-    "/Users/aarontun/.nuget/packages/microsoft.netcore.app.ref/8.0.17/microsoft.netcore.app.ref.8.0.17.nupkg.sha512",
     "/Users/aarontun/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.17/microsoft.aspnetcore.app.ref.8.0.17.nupkg.sha512",
-    "/Users/aarontun/.nuget/packages/microsoft.netcore.app.host.osx-arm64/8.0.17/microsoft.netcore.app.host.osx-arm64.8.0.17.nupkg.sha512"
+    "/Users/aarontun/.nuget/packages/microsoft.netcore.app.host.osx-arm64/8.0.17/microsoft.netcore.app.host.osx-arm64.8.0.17.nupkg.sha512",
+    "/Users/aarontun/.nuget/packages/microsoft.netcore.app.ref/8.0.17/microsoft.netcore.app.ref.8.0.17.nupkg.sha512"
   ],
   "logs": []
 }
