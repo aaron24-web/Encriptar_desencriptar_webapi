@@ -6,7 +6,7 @@ public class Manga
     public int Id { get; set; } // Identificador único
     public required string Title { get; set; } // Título del manga (C# 11 'required')
     public required string Author { get; set; } // Autor del manga (C# 11 'required')
-    public string? Genre { get; set; } // Género (opcional, por eso el '?')
+    public int? Genre { get; set; } // Género (opcional, por eso el '?')
     public DateTime PublicationDate { get; set; } // Fecha de publicación
     public int Volumes { get; set; } // Número de volúmenes
     public bool IsOngoing { get; set; } // ¿Sigue en publicación?
