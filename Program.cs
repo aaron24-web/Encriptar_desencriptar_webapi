@@ -1,5 +1,3 @@
-// Programa principal
-
 // --- CAMBIOS EMPIEZAN AQUÍ ---
 
 // Usings necesarios para la nueva configuración
