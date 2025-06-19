@@ -53,7 +53,7 @@ namespace JaveragesLibrary.Controllers.V1
                 issuer: _config["Jwt:Issuer"],
                 audience: _config["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddHours(1), // El token es válido por 1 hora
+                expires: DateTime.Now.AddHours(1), // El token hasta por 1 hora
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);

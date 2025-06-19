@@ -13,6 +13,25 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// --- INICIA CONFIGURACIÓN DE CORS ---
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          // Para desarrollo, podemos ser permisivos.
+                          // En producción, se recomienda especificar los dominios:
+                          // policy.WithOrigins("https://tu-frontend.com");
+                          policy.AllowAnyOrigin()
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+                      });
+});
+// --- TERMINA CONFIGURACIÓN DE CORS ---
+
+
 // Registra los perfiles de AutoMapper
 builder.Services.AddAutoMapper(typeof(ResponseMappingProfile).Assembly);
 
@@ -90,7 +109,9 @@ if (app.Environment.IsDevelopment())
 
 // app.UseHttpsRedirection();
 
-// --- AÑADE ESTAS DOS LÍNEAS ANTES DE `app.MapControllers()` ---
+// --- AÑADE app.UseCors() ANTES DE LA AUTENTICACIÓN ---
+app.UseCors(MyAllowSpecificOrigins);
+
 app.UseAuthentication();
 app.UseAuthorization();
 

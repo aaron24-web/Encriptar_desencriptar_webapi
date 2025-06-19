@@ -1,0 +1,17 @@
+# Archivo .gitignore
+
+# Archivos de configuración locales con secretos
+appsettings.Development.json
+secrets.json
+
+# Archivos de compilación y específicos del IDE
+[Bb]in/
+[Oo]bj/
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Archivos del sistema operativo
+[Tt]humbs.db
+.DS_Store
