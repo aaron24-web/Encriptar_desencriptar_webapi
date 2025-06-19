@@ -6,6 +6,7 @@ using JaveragesLibrary.Services.Features.Generos; // <-- Este 'using' es clave
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 // NOTA: No necesitamos un 'using' para la entidad aquí, el servicio ya se encarga de eso.
 
@@ -13,6 +14,7 @@ namespace JaveragesLibrary.Controllers.V1
 {
     [ApiController]
     [Route("api/v1/[controller]")]
+    [Authorize]
     public class GenerosController : ControllerBase
     {
         private readonly GenerosService _generosService;

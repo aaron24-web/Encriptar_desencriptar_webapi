@@ -7,11 +7,13 @@ using JaveragesLibrary.Services.Features.Mangas;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace JaveragesLibrary.Controllers.V1
 {
     [ApiController]
     [Route("api/v1/[controller]")]
+    [Authorize]
     public class MangaController : ControllerBase
     {
         private readonly MangaService _mangaService;

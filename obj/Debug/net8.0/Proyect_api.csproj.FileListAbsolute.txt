@@ -277,3 +277,11 @@
 /Users/aarontun/Codes/C#/WebApi_MangaDB_v1/Proyect_api/obj/Debug/net8.0/Proyect_api.pdb
 /Users/aarontun/Codes/C#/WebApi_MangaDB_v1/Proyect_api/obj/Debug/net8.0/Proyect_api.genruntimeconfig.cache
 /Users/aarontun/Codes/C#/WebApi_MangaDB_v1/Proyect_api/obj/Debug/net8.0/ref/Proyect_api.dll
+/Users/aarontun/Codes/C#/WebApi_MangaDB_v1/Proyect_api/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/Users/aarontun/Codes/C#/WebApi_MangaDB_v1/Proyect_api/bin/Debug/net8.0/Microsoft.IdentityModel.Abstractions.dll
+/Users/aarontun/Codes/C#/WebApi_MangaDB_v1/Proyect_api/bin/Debug/net8.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/Users/aarontun/Codes/C#/WebApi_MangaDB_v1/Proyect_api/bin/Debug/net8.0/Microsoft.IdentityModel.Logging.dll
+/Users/aarontun/Codes/C#/WebApi_MangaDB_v1/Proyect_api/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.dll
+/Users/aarontun/Codes/C#/WebApi_MangaDB_v1/Proyect_api/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/Users/aarontun/Codes/C#/WebApi_MangaDB_v1/Proyect_api/bin/Debug/net8.0/Microsoft.IdentityModel.Tokens.dll
+/Users/aarontun/Codes/C#/WebApi_MangaDB_v1/Proyect_api/bin/Debug/net8.0/System.IdentityModel.Tokens.Jwt.dll
