@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/aarontun/Codes/C#/WebApi_MangaDB_v1/Proyect_api/Proyect_api.csproj": {}
+    "/Users/aarontun/Codes/C#/WebApi_MangaDB_V2/Man_Supa_V2/Proyect_api.csproj": {}
   },
   "projects": {
-    "/Users/aarontun/Codes/C#/WebApi_MangaDB_v1/Proyect_api/Proyect_api.csproj": {
+    "/Users/aarontun/Codes/C#/WebApi_MangaDB_V2/Man_Supa_V2/Proyect_api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/aarontun/Codes/C#/WebApi_MangaDB_v1/Proyect_api/Proyect_api.csproj",
+        "projectUniqueName": "/Users/aarontun/Codes/C#/WebApi_MangaDB_V2/Man_Supa_V2/Proyect_api.csproj",
         "projectName": "Proyect_api",
-        "projectPath": "/Users/aarontun/Codes/C#/WebApi_MangaDB_v1/Proyect_api/Proyect_api.csproj",
+        "projectPath": "/Users/aarontun/Codes/C#/WebApi_MangaDB_V2/Man_Supa_V2/Proyect_api.csproj",
         "packagesPath": "/Users/aarontun/.nuget/packages/",
-        "outputPath": "/Users/aarontun/Codes/C#/WebApi_MangaDB_v1/Proyect_api/obj/",
+        "outputPath": "/Users/aarontun/Codes/C#/WebApi_MangaDB_V2/Man_Supa_V2/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/aarontun/.nuget/NuGet/NuGet.Config"
