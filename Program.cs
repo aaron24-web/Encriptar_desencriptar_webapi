@@ -1,11 +1,9 @@
-// JaveragesLibrary/Program.cs
+// Program.cs - Versión Final y Completa
 
 using System.Text;
-using JaveragesLibrary.Infrastructure.Data;
-using JaveragesLibrary.Infrastructure.Repositories;
-using JaveragesLibrary.Services.Features.Generos;
-using JaveragesLibrary.Services.Features.Mangas;
-using JaveragesLibrary.Services.MappingsM;
+using ENCRYPT.infrastructure.Data;
+using ENCRYPT.infrastructure.Repositories;
+using ENCRYPT.Services.Features.Cryptography;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -13,40 +11,35 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// --- INICIA CONFIGURACIÓN DE CORS ---
+// --- 1. INICIA CONFIGURACIÓN DE CORS ---
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          // Para desarrollo, podemos ser permisivos.
-                          // En producción, se recomienda especificar los dominios:
-                          // policy.WithOrigins("https://tu-frontend.com");
+                          // Para desarrollo, permitimos cualquier origen.
+                          // Para producción, lo cambiarías por: policy.WithOrigins("https://tu-pagina-web.com");
                           policy.AllowAnyOrigin()
                                 .AllowAnyHeader()
                                 .AllowAnyMethod();
                       });
 });
-// --- TERMINA CONFIGURACIÓN DE CORS ---
-
-
-// Registra los perfiles de AutoMapper
-builder.Services.AddAutoMapper(typeof(ResponseMappingProfile).Assembly);
+// --- FIN DE CONFIGURACIÓN DE CORS ---
 
 // Configura el DbContext
 var connectionString = builder.Configuration.GetConnectionString("SupabaseConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(connectionString));
+    options.UseNpgsql(connectionString, npgsqlOptions =>
+    {
+        npgsqlOptions.CommandTimeout(90);
+    }));
 
-// El registro de todos los servicios
-builder.Services.AddScoped<MangaRepository>();
-builder.Services.AddScoped<MangaService>();
-builder.Services.AddScoped<GenerosRepository>();
-builder.Services.AddScoped<GenerosService>();
+// Registro de Servicios
+builder.Services.AddScoped<EncryptionService>();
+builder.Services.AddScoped<EncryptedMessageRepository>();
 
-// --- CONFIGURACIÓN DE JWT ---
+// Configuración de Autenticación JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -62,14 +55,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 builder.Services.AddAuthorization();
-// --- FIN DE CONFIGURACIÓN DE JWT ---
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-// --- MODIFICACIÓN DE SWAGGERGEN PARA AÑADIR EL BOTÓN 'AUTHORIZE' ---
+// Configuración de Swagger para que muestre el botón "Authorize"
 builder.Services.AddSwaggerGen(options =>
 {
+    options.SwaggerDoc("v1", new OpenApiInfo { Version = "v1", Title = "API de Cifrado" });
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
@@ -78,17 +71,9 @@ builder.Services.AddSwaggerGen(options =>
         Type = SecuritySchemeType.ApiKey,
         Scheme = "Bearer"
     });
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement {
         {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
+            new OpenApiSecurityScheme { Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" } },
             new string[] {}
         }
     });
@@ -96,19 +81,20 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Pipeline de peticiones
+if (app.Environment.IsDevelopment())
+{
+   app.UseSwagger();
+   app.UseSwaggerUI(options => {
+       options.SwaggerEndpoint("/swagger/v1/swagger.json", "Cifrado API V1");
+       options.RoutePrefix = string.Empty;
+   });
+}
 
-    app.UseSwagger();
-    app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Tu API V1");
-        options.RoutePrefix = string.Empty;
-    });
+app.UseHttpsRedirection();
 
-
-// app.UseHttpsRedirection();
-
-// --- AÑADE app.UseCors() ANTES DE LA AUTENTICACIÓN ---
+// --- 2. APLICA LA POLÍTICA DE CORS AQUÍ ---
+// El orden es importante: antes de Authentication y Authorization
 app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthentication();

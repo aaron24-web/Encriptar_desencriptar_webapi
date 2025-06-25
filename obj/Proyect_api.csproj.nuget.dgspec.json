@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/aarontun/Codes/C#/WebApi_MangaDB_V2/Man_Supa_V2/Proyect_api.csproj": {}
+    "/Users/aarontun/Codes/C#/Web_Api_Encrypt/Encrypt/Proyect_api.csproj": {}
   },
   "projects": {
-    "/Users/aarontun/Codes/C#/WebApi_MangaDB_V2/Man_Supa_V2/Proyect_api.csproj": {
+    "/Users/aarontun/Codes/C#/Web_Api_Encrypt/Encrypt/Proyect_api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/aarontun/Codes/C#/WebApi_MangaDB_V2/Man_Supa_V2/Proyect_api.csproj",
+        "projectUniqueName": "/Users/aarontun/Codes/C#/Web_Api_Encrypt/Encrypt/Proyect_api.csproj",
         "projectName": "Proyect_api",
-        "projectPath": "/Users/aarontun/Codes/C#/WebApi_MangaDB_V2/Man_Supa_V2/Proyect_api.csproj",
+        "projectPath": "/Users/aarontun/Codes/C#/Web_Api_Encrypt/Encrypt/Proyect_api.csproj",
         "packagesPath": "/Users/aarontun/.nuget/packages/",
-        "outputPath": "/Users/aarontun/Codes/C#/WebApi_MangaDB_V2/Man_Supa_V2/obj/",
+        "outputPath": "/Users/aarontun/Codes/C#/Web_Api_Encrypt/Encrypt/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/aarontun/.nuget/NuGet/NuGet.Config"
@@ -54,17 +54,17 @@
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[9.0.6, )"
+              "version": "[8.0.6, )"
             },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[9.0.6, )"
+              "version": "[8.0.6, )"
             },
             "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
-              "version": "[9.0.4, )"
+              "version": "[8.0.4, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
