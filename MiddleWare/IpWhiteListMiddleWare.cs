@@ -1,7 +1,6 @@
 // Middlewares/IpWhitelistMiddleware.cs
 using System.Net;
 
-// Define un espacio de nombres para organizar el código.
 namespace ENCRYPT.Middlewares
 {
     public class IpWhitelistMiddleware
@@ -14,18 +13,26 @@ namespace ENCRYPT.Middlewares
         {
             _next = next;
             _logger = logger;
-            // Guardamos las IPs permitidas al iniciar la aplicación.
             _whitelistedIpStrings = whitelist.Split(';');
         }
 
         public async Task Invoke(HttpContext context)
         {
-            // Gracias a la configuración que haremos en Program.cs, esta IP será la del cliente real.
+            // =================================================================
+            // INICIO DEL CÓDIGO DE DIAGNÓSTICO TEMPORAL
+            // Este bloque imprimirá todos los encabezados de la petición.
+            // =================================================================
+            _logger.LogWarning("--- INICIANDO DIAGNÓSTICO DE ENCABEZADOS ---");
+            foreach (var header in context.Request.Headers)
+            {
+                _logger.LogWarning("Encabezado: {Key}: {Value}", header.Key, header.Value);
+            }
+            _logger.LogWarning("--- FIN DEL DIAGNÓSTICO DE ENCABEZADOS ---");
+            // =================================================================
+            
             var remoteIp = context.Connection.RemoteIpAddress;
+            _logger.LogInformation("Petición recibida desde la IP (detectada por ASP.NET): {RemoteIp}", remoteIp);
 
-            _logger.LogInformation("Petición recibida desde la IP: {RemoteIp}", remoteIp);
-
-            // Si por alguna razón la IP no se puede determinar, bloqueamos el acceso.
             if (remoteIp == null)
             {
                 _logger.LogWarning("Acceso denegado: No se pudo determinar la IP de origen.");
@@ -34,7 +41,6 @@ namespace ENCRYPT.Middlewares
                 return;
             }
 
-            // Siempre permitimos el acceso desde localhost (127.0.0.1 o ::1) para facilitar el desarrollo.
             if (IPAddress.IsLoopback(remoteIp))
             {
                 _logger.LogInformation("Acceso permitido para IP local (loopback): {RemoteIp}", remoteIp);
@@ -42,9 +48,6 @@ namespace ENCRYPT.Middlewares
                 return;
             }
 
-            // Revisamos si la IP del cliente está en nuestra lista blanca.
-            // Esta forma de comparar funciona correctamente con formatos IPv4 (como 1.2.3.4)
-            // y formatos IPv6-mapeados (como ::ffff:1.2.3.4) que usan los proveedores de nube.
             foreach (var ipString in _whitelistedIpStrings)
             {
                 if (IPAddress.TryParse(ipString, out var whitelistedIp) && whitelistedIp.Equals(remoteIp))
@@ -55,7 +58,6 @@ namespace ENCRYPT.Middlewares
                 }
             }
             
-            // Si la IP no es local y no está en la lista, el acceso es denegado.
             _logger.LogWarning("Acceso denegado para IP no autorizada: {RemoteIp}", remoteIp);
             context.Response.StatusCode = StatusCodes.Status403Forbidden;
             await context.Response.WriteAsync("Acceso denegado.");
