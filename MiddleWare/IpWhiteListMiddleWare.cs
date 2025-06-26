@@ -1,5 +1,6 @@
 // Middlewares/IpWhitelistMiddleware.cs
 using System.Net;
+using Microsoft.Extensions.Primitives;
 
 namespace ENCRYPT.Middlewares
 {
@@ -18,20 +19,31 @@ namespace ENCRYPT.Middlewares
 
         public async Task Invoke(HttpContext context)
         {
-            // =================================================================
-            // INICIO DEL CÓDIGO DE DIAGNÓSTICO TEMPORAL
-            // Este bloque imprimirá todos los encabezados de la petición.
-            // =================================================================
-            _logger.LogWarning("--- INICIANDO DIAGNÓSTICO DE ENCABEZADOS ---");
-            foreach (var header in context.Request.Headers)
-            {
-                _logger.LogWarning("Encabezado: {Key}: {Value}", header.Key, header.Value);
-            }
-            _logger.LogWarning("--- FIN DEL DIAGNÓSTICO DE ENCABEZADOS ---");
-            // =================================================================
+            // --- LÓGICA DE DETECCIÓN DE IP DEFINITIVA ---
+            // Leemos la IP directamente de los encabezados que nos interesan.
+            IPAddress? remoteIp = null;
             
-            var remoteIp = context.Connection.RemoteIpAddress;
-            _logger.LogInformation("Petición recibida desde la IP (detectada por ASP.NET): {RemoteIp}", remoteIp);
+            // Prioridad 1: Encabezado de Cloudflare (el más fiable en tu caso)
+            if (context.Request.Headers.TryGetValue("Cf-Connecting-Ip", out StringValues cfIp))
+            {
+                IPAddress.TryParse(cfIp.ToString(), out remoteIp);
+                _logger.LogInformation("IP detectada desde encabezado 'Cf-Connecting-Ip': {RemoteIp}", remoteIp);
+            }
+            // Prioridad 2: Encabezado estándar X-Forwarded-For (si Cloudflare no estuviera)
+            else if (context.Request.Headers.TryGetValue("X-Forwarded-For", out StringValues xffIp))
+            {
+                // Este encabezado puede ser una lista de IPs (cliente, proxy1, proxy2). La primera es la del cliente.
+                var firstIp = xffIp.ToString().Split(',').FirstOrDefault();
+                IPAddress.TryParse(firstIp, out remoteIp);
+                _logger.LogInformation("IP detectada desde encabezado 'X-Forwarded-For': {RemoteIp}", remoteIp);
+            }
+            else
+            {
+                // Último recurso: la IP de la conexión directa.
+                remoteIp = context.Connection.RemoteIpAddress;
+                 _logger.LogInformation("IP detectada desde la conexión directa: {RemoteIp}", remoteIp);
+            }
+            // --- FIN DE LÓGICA DE DETECCIÓN ---
 
             if (remoteIp == null)
             {
